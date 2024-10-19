@@ -69,7 +69,7 @@ class FlatNeuralNetwork(NeuralNetwork):
 
 if __name__ == '__main__':
     from activation_functions import Sigmoid, LeakyRelu
-    from loss_funnctions import SquaredError
+    from loss_functions import SquaredError
 
     import dataset.mnist as data
 
