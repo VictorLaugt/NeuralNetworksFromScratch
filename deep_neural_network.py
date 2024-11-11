@@ -21,12 +21,18 @@ class DeepNeuralNetwork(NeuralNetwork):
         self.d_W = [None] * (self.depth+1)
         self.d_b = [None] * (self.depth+1)
 
-        self.init_weights()
+        self.init_parameters()
 
-    def init_weights(self):
+    def init_parameters(self):
         for l in range(0, self.depth+1, 1):
             self.W[l] = np.random.randn(self.layer_sizes[l+1], self.layer_sizes[l])
             self.b[l] = np.random.randn(self.layer_sizes[l+1], 1)
+
+    def n_parameters(self):
+        n_params = 0
+        for l in range(0, self.depth+1, 1):
+            n_params += self.layer_sizes[l+1] * (self.layer_sizes[l]+1)
+        return n_params
 
     def predict(self, X):
         assert X.ndim == 2, 'wrong rank'
@@ -90,6 +96,8 @@ if __name__ == '__main__':
         layer_sizes=(data.height*data.width, 32, 64, 32, 10),
         activations=(g, g, g, g)
     )
+    print(f"Number of parameters = {nn.n_parameters()}")
+
     nn.fit(data.X_train, data.d_train, criterion=SquaredError(), n_epochs=10, batch_size=512, lr=0.01)
 
     def compute_accuracy(y_pred, y):

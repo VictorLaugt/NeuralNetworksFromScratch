@@ -4,8 +4,12 @@ import numpy as np
 
 class NeuralNetwork(abc.ABC):
     @abc.abstractmethod
-    def init_weights(self):
+    def init_parameters(self):
         """Randomly initialize the parameters of the neural network."""
+
+    @abc.abstractmethod
+    def n_parameters(self):
+        """Returns the number of learnable parameters of the neural network."""
 
     @abc.abstractmethod
     def predict(self, X):

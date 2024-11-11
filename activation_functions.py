@@ -11,6 +11,10 @@ class ActivationFunction(abc.ABC):
     def deriv(self, a):
         pass
 
+    # @abc.abstractmethod
+    # def init_parameters(self, n_input):
+    #     ...
+
 
 class Sigmoid(ActivationFunction):
     @staticmethod

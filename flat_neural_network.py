@@ -9,18 +9,21 @@ class FlatNeuralNetwork(NeuralNetwork):
         self.n_outputs = n_output
         self.activ1 = activation1
         self.activ2 = activation2
-        self.init_weights()
+        self.init_parameters()
 
-    def init_weights(self):
+    def init_parameters(self):
         self.W1 = np.random.randn(self.n_hiddens, self.n_inputs)
         self.b1 = np.random.randn(self.n_hiddens, 1)
         self.W2 = np.random.randn(self.n_outputs, self.n_hiddens)
         self.b2 = np.random.randn(self.n_outputs, 1)
 
-        # self.W1 = np.random.random((self.n_hidden, self.n_input))
-        # self.b1 = np.random.random((self.n_hidden, 1))
-        # self.W2 = np.random.random((self.n_output, self.n_hidden))
-        # self.b2 = np.random.random((self.n_output, 1))
+        # self.W1 = np.random.random((self.n_hiddens, self.n_inputs))
+        # self.b1 = np.random.random((self.n_hiddens, 1))
+        # self.W2 = np.random.random((self.n_outputs, self.n_hiddens))
+        # self.b2 = np.random.random((self.n_outputs, 1))
+
+    def n_parameters(self):
+        return self.n_hiddens * (self.n_inputs+1) + self.n_outputs * (self.n_hiddens+1)
 
     def predict(self, X):
         assert X.ndim == 2, 'wrong rank'
@@ -83,6 +86,7 @@ if __name__ == '__main__':
         activation1=Sigmoid(),
         activation2=Sigmoid()
     )
+    print(f"Number of parameters = {nn.n_parameters()}")
 
     criterion = SquaredError()
     nn.fit(data.X_train, data.d_train, criterion, n_epochs=10, batch_size=512, lr=0.01)
