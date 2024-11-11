@@ -4,7 +4,7 @@ import numpy as np
 
 class NeuralNetwork(abc.ABC):
     @abc.abstractmethod
-    def init_parameters(self):
+    def init_parameters(self, rng):
         """Randomly initialize the parameters of the neural network."""
 
     @abc.abstractmethod

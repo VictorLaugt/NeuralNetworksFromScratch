@@ -11,9 +11,11 @@ class ActivationFunction(abc.ABC):
     def deriv(self, a):
         pass
 
-    # @abc.abstractmethod
-    # def init_parameters(self, n_input):
-    #     ...
+    @staticmethod
+    def layer_init(rng, n_in, n_out):
+        W = rng.standard_normal((n_out, n_in))
+        b = rng.standard_normal((n_out, 1))
+        return W, b
 
 
 class Sigmoid(ActivationFunction):
@@ -25,6 +27,13 @@ class Sigmoid(ActivationFunction):
     def deriv(a):
         sigmoid_a = 1 / (1 + np.exp(-a))
         return sigmoid_a * (1 - sigmoid_a)
+
+    @staticmethod
+    def layer_init(rng, n_in, n_out):
+        """Xavier (Glorot) weights initialization"""
+        W = rng.normal(loc=0., scale=np.sqrt(1 / n_in), size=(n_out, n_in))
+        b = np.zeros((n_out, 1))
+        return W, b
 
 
 class ReLu(ActivationFunction):
@@ -38,8 +47,15 @@ class ReLu(ActivationFunction):
         result[a < 0.] = 0.
         return result
 
+    @staticmethod
+    def layer_init(rng, n_in, n_out):
+        """He weights initialization"""
+        W = rng.normal(loc=0., scale=np.sqrt(2 / n_in), size=(n_out, n_in))
+        b = np.zeros((n_out, 1))
+        return W, b
 
-class LeakyRelu(ActivationFunction):
+
+class LeakyRelu(ReLu):
     def __init__(self, slope):
         self.slope = slope
 

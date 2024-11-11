@@ -3,24 +3,17 @@ from neural_network import NeuralNetwork
 
 
 class FlatNeuralNetwork(NeuralNetwork):
-    def __init__(self, n_input, n_hidden, n_output, activation1, activation2):
+    def __init__(self, n_input, n_hidden, n_output, activation1, activation2, rng=None):
         self.n_inputs = n_input
         self.n_hiddens = n_hidden
         self.n_outputs = n_output
         self.activ1 = activation1
         self.activ2 = activation2
-        self.init_parameters()
+        self.init_parameters(np.random.default_rng(rng))
 
-    def init_parameters(self):
-        self.W1 = np.random.randn(self.n_hiddens, self.n_inputs)
-        self.b1 = np.random.randn(self.n_hiddens, 1)
-        self.W2 = np.random.randn(self.n_outputs, self.n_hiddens)
-        self.b2 = np.random.randn(self.n_outputs, 1)
-
-        # self.W1 = np.random.random((self.n_hiddens, self.n_inputs))
-        # self.b1 = np.random.random((self.n_hiddens, 1))
-        # self.W2 = np.random.random((self.n_outputs, self.n_hiddens))
-        # self.b2 = np.random.random((self.n_outputs, 1))
+    def init_parameters(self, rng):
+        self.W1, self.b1 = self.activ1.layer_init(rng, self.n_inputs, self.n_hiddens)
+        self.W2, self.b2 = self.activ2.layer_init(rng, self.n_hiddens, self.n_outputs)
 
     def n_parameters(self):
         return self.n_hiddens * (self.n_inputs+1) + self.n_outputs * (self.n_hiddens+1)

@@ -3,7 +3,7 @@ from neural_network import NeuralNetwork
 
 
 class DeepNeuralNetwork(NeuralNetwork):
-    def __init__(self, layer_sizes, activations):
+    def __init__(self, layer_sizes, activations, rng=None):
         assert len(layer_sizes) >= 3, 'need at least one hidden layer'
         assert len(activations) == len(layer_sizes) - 1, 'wrong number of activation functions'
 
@@ -21,12 +21,13 @@ class DeepNeuralNetwork(NeuralNetwork):
         self.d_W = [None] * (self.depth+1)
         self.d_b = [None] * (self.depth+1)
 
-        self.init_parameters()
+        self.init_parameters(np.random.default_rng(rng))
 
-    def init_parameters(self):
+    def init_parameters(self, rng):
         for l in range(0, self.depth+1, 1):
-            self.W[l] = np.random.randn(self.layer_sizes[l+1], self.layer_sizes[l])
-            self.b[l] = np.random.randn(self.layer_sizes[l+1], 1)
+            W, b = self.activ[l].layer_init(rng, self.layer_sizes[l], self.layer_sizes[l+1])
+            self.W[l] = W
+            self.b[l] = b
 
     def n_parameters(self):
         n_params = 0
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     g = Sigmoid()
     nn = DeepNeuralNetwork(
         layer_sizes=(data.height*data.width, 32, 64, 32, 10),
-        activations=(g, g, g, g)
+        activations=(g, g, g, g),
     )
     print(f"Number of parameters = {nn.n_parameters()}")
 
