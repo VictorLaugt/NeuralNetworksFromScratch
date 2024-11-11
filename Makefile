@@ -1,4 +1,4 @@
-DATASET_DIR = dataset
+DATASET_DIR = demo/mnist_dataset
 
 all: extract_mnist
 

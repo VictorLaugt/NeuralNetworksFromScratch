@@ -1,5 +1,5 @@
 import numpy as np
-from neural_network import NeuralNetwork
+from neural.structures.neural_network import NeuralNetwork
 
 
 class DeepNeuralNetwork(NeuralNetwork):

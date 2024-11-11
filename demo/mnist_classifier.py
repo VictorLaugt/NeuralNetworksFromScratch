@@ -2,22 +2,20 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Sequence
-    from neural_network import NeuralNetwork
+    from neural.structures import NeuralNetwork
 
-from flat_neural_network import FlatNeuralNetwork
-from deep_neural_network import DeepNeuralNetwork
+from neural.structures import FlatNeuralNetwork, DeepNeuralNetwork
+from neural.functions.activation import Sigmoid, LeakyRelu
+from neural.functions.loss import SquaredError
+from neural.evaluation import compute_accuracy, plot_confusion_matrix
 
-from activation_functions import Sigmoid, LeakyRelu
-from loss_functions import SquaredError
-
-import dataset.mnist as data
-from metrics import compute_accuracy, plot_confusion_matrix
+import demo.mnist_dataset.load as data
 
 import matplotlib.pyplot as plt
 from time import perf_counter
 
 
-def compare_neural_networks(neural_networks: Sequence[NeuralNetwork], names: Sequence[str]) -> None:
+def compare_structures(neural_networks: Sequence[NeuralNetwork], names: Sequence[str]) -> None:
     assert len(neural_networks) == len(names)
 
     fig, ax = plt.subplots(1, len(neural_networks)+1, figsize=(20, 5))
@@ -39,7 +37,7 @@ def compare_neural_networks(neural_networks: Sequence[NeuralNetwork], names: Seq
         print(f"train accuracy = {accuracy_train}")
         print(f"test accuracy  = {accuracy_test}")
         print(f"number of parameters = {nn.n_parameters()}")
-        print(f"training time = {t1 - t0:.5f}\n")
+        print(f"training time = {t1 - t0:.5f} sec\n")
 
         ax[i].set_title(name)
         plot_confusion_matrix(data.labels_test, labels_test_pred, ax=ax[i])
@@ -67,4 +65,4 @@ deep_nn = DeepNeuralNetwork(
 )
 criterion = SquaredError()
 
-compare_neural_networks((flat_nn, deep_nn), ("flat neural network", "deep neural network"))
+compare_structures((flat_nn, deep_nn), ("flat neural network", "deep neural network"))

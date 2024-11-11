@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def plot_confusion_matrix(y_true, y_pred, class_names=None, ax=None):
     labels = np.unique((y_true, y_pred))
     n_labels = labels.max() + 1
