@@ -81,38 +81,3 @@ class DeepNeuralNetwork(NeuralNetwork):
         assert X.shape[1] == d.shape[1], 'wrong number of samples'
 
         return super().fit(X, d, criterion, n_epochs, batch_size, lr)
-
-
-if __name__ == '__main__':
-    from activation_functions import Sigmoid, LeakyRelu
-    from loss_functions import SquaredError
-
-    import dataset.mnist as data
-
-    from sklearn.metrics import ConfusionMatrixDisplay
-    import matplotlib.pyplot as plt
-
-    g = Sigmoid()
-    nn = DeepNeuralNetwork(
-        layer_sizes=(data.height*data.width, 32, 64, 32, 10),
-        activations=(g, g, g, g),
-    )
-    print(f"Number of parameters = {nn.n_parameters()}")
-
-    nn.fit(data.X_train, data.d_train, criterion=SquaredError(), n_epochs=10, batch_size=512, lr=0.01)
-
-    def compute_accuracy(y_pred, y):
-        assert len(y_pred) == len(y) and y_pred.ndim == y.ndim
-        return np.count_nonzero(y_pred == y) / len(y)
-
-    labels_train_pred = nn.predict(data.X_train)
-    labels_test_pred = nn.predict(data.X_test)
-    accuracy_train = compute_accuracy(labels_train_pred, data.labels_train)
-    accuracy_test = compute_accuracy(labels_test_pred, data.labels_test)
-
-    print(f"{accuracy_train = }")
-    print(f"{accuracy_test = }")
-
-    disp = ConfusionMatrixDisplay.from_predictions(data.labels_test, labels_test_pred)
-    disp.ax_.set_title("Deep neural network classifier")
-    plt.show()
