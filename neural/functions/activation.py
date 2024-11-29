@@ -39,7 +39,7 @@ class Sigmoid(ActivationFunction):
 class ReLu(ActivationFunction):
     @staticmethod
     def func(a):
-        return np.max(a, 0.)
+        return np.maximum(a, 0.)
 
     @staticmethod
     def deriv(a):
