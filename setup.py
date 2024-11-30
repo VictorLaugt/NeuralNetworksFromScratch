@@ -9,7 +9,7 @@ with REQUIREMENTS_FILE.open(mode='r') as requirements:
 
 setup(
     name="minimalist_neural_networks",
-    version="1.0",
+    version="1.1",
     description=(
         "A minimalist implementation of deep neural networks which requires few "
         "dependencies."
